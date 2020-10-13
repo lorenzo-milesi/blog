@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PostRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,12 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
+    use ResourceId, Timestamped;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,9 +33,8 @@ class Post
      */
     private User $author;
 
-    public function getId(): ?int
-    {
-        return $this->id;
+    public function __construct() {
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getTitle(): ?string
@@ -66,7 +61,7 @@ class Post
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): User
     {
         return $this->author;
     }
